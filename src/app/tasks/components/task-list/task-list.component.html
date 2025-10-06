@@ -1,0 +1,45 @@
+<div class="container mt-5">
+   <div class="d-flex justify-content-between align-items-center mb-3">
+    <h1>📝 To-Do List</h1>
+    <button class="btn btn-outline-danger" (click)="logout()">Logout</button>
+  </div>
+
+  <a class="btn btn-primary mb-3" routerLink="/tasks/new">+ Nouvelle tâche</a>
+
+  <table class="table table-striped table-hover">
+    <thead class="table-dark">
+      <tr>
+        <th>Titre</th>
+        <th>Description</th>
+        <th>Priorité</th>
+        <th>Date d'échéance</th>
+        <th>Statut</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let task of tasks$ | async">
+        <td [class.text-decoration-line-through]="task.completed">{{ task.title }}</td>
+        <td [class.text-decoration-line-through]="task.completed">{{ task.description }}</td>
+        <td>{{ task.priority }}</td>
+        <td>{{ task.dueDate | date:'shortDate' }}</td>
+       <td>
+  <span 
+    [ngClass]="{
+      'text-danger text-decoration-line-through': task.completed,
+      'text-warning': !task.completed
+    }">
+    {{ task.completed ? 'Terminé' : 'En cours' }}
+  </span>
+</td>
+        <td>
+          <div class="btn-group">
+            <button class="btn btn-success btn-sm" (click)="toggleComplete(task.id)">✔</button>
+            <button class="btn btn-primary btn-sm" [routerLink]="['/tasks', task.id, 'edit']">✏️</button>
+            <button class="btn btn-danger btn-sm" (click)="deleteTask(task.id)">🗑️</button>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
